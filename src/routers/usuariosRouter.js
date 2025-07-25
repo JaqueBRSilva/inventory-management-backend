@@ -1,15 +1,12 @@
 import express from "express"
-import { getFirestore } from "firebase-admin/firestore"
-import app from '../firebase/app.js'
+import { createUser, deleteUser, findAllUsers, findUserById } from "../services/usuariosService.js"
 
 const usuariosRouter = express.Router()
-const db = getFirestore(app)
 
 // GET /usuarios
 usuariosRouter.get("/usuarios", async (req, res) => {
     try {
-        const documents = await db.collection("usuarios").get()
-        const usuarios = documents.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        const usuarios = await findAllUsers()
         return res.status(200).json(usuarios)
 
     } catch (error) {
@@ -21,12 +18,10 @@ usuariosRouter.get("/usuarios", async (req, res) => {
 usuariosRouter.get("/usuarios/:id", async (req, res) => {
     try {
         const id = req.params.id
-        const doc = await db.collection("usuarios").doc(id).get()
+        const usuario = await findUserById(id)
 
-        if (doc.exists) {
-            const usuario = { id: doc.id, ...doc.data() }
+        if (usuario) {
             return res.status(200).json(usuario)
-
         } else {
             return res.status(404).json({ msg: "Usuário não encontrado" })
         }
@@ -40,9 +35,8 @@ usuariosRouter.get("/usuarios/:id", async (req, res) => {
 usuariosRouter.post("/usuarios", async (req, res) => {
     try {
         const usuario = req.body
-        await db.collection("usuarios").add(usuario)
+        await createUser(usuario)
         return res.status(201).json({ msg: "Usuário Cadastrado" })
-
     } catch (error) {
         return res.status(500).json({ msg: "Erro interno no servidor" })
     }
@@ -53,17 +47,13 @@ usuariosRouter.put("/usuarios/:id", async (req, res) => {
     try {
         const id = req.params.id
         const usuario = req.body
+        const flag = await update(id, usuario)
 
-        const docRef = db.collection("usuarios").doc(id)
-        const doc = await docRef.get()
-
-        if (doc.exists) {
-            await docRef.update(usuario)
+        if (flag) {
             return res.status(200).json({ msg: "Usuário alterado" })
         } else {
             return res.status(404).json({ msg: "Usuário não encontrado" })
         }
-
     } catch (error) {
         return res.status(500).json({ msg: "Erro interno no servidor" })
     }
@@ -73,16 +63,13 @@ usuariosRouter.put("/usuarios/:id", async (req, res) => {
 usuariosRouter.delete("/usuarios/:id", async (req, res) => {
     try {
         const id = req.params.id
-        const docRef = db.collection("usuarios").doc(id)
-        const doc = await docRef.get()
+        const flag = await deleteUser(id)
 
-        if (doc.exists) {
-            await docRef.delete()
+        if (flag) {
             return res.status(200).json({ msg: "Usuário excluído" })
         } else {
             return res.status(404).json({ msg: "Usuário não encontrado" })
         }
-
     } catch (error) {
         return res.status(500).json({ msg: "Erro interno no servidor" })
     }
