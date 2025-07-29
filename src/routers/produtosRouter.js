@@ -8,9 +8,8 @@ produtosRouter.get("/produtos", async (req, res) => {
     try {
         const produtos = await findAll()
         return res.status(200).json(produtos);
-
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor." });
+        return res.status(500).json({ msg: "Erro interno no servidor.", error });
     }
 });
 
@@ -26,7 +25,7 @@ produtosRouter.get("/produtos/:id", async (req, res) => {
             return res.status(404).json({ msg: "Produto não encontrado." });
         }
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor." });
+        return res.status(500).json({ msg: "Erro interno no servidor.", error });
     }
 });
 
@@ -37,7 +36,7 @@ produtosRouter.post("/produtos", async (req, res) => {
         await save(produto)
         return res.status(201).json({ msg: "Produto cadastrado." });
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor." });
+        return res.status(500).json({ msg: 'Erro interno no servidor', error });
     }
 });
 
@@ -54,7 +53,7 @@ produtosRouter.put("/produtos/:id", async (req, res) => {
             return res.status(404).json({ msg: "Produto não encontrado." });
         }
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor." });
+        return res.status(500).json({ msg: "Erro interno no servidor.", error });
     }
 });
 
@@ -70,7 +69,7 @@ produtosRouter.delete("/produtos/:id", async (req, res) => {
             return res.status(404).json({ msg: "Produto não encontrado." });
         }
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor." });
+        return res.status(500).json({ msg: "Erro interno no servidor.", error });
     }
 });
 

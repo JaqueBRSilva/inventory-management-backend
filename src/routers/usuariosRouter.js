@@ -10,7 +10,7 @@ usuariosRouter.get("/usuarios", async (req, res) => {
         return res.status(200).json(usuarios)
 
     } catch (error) {
-        return res.status(500).json({ msg: "Houve um erro. Tente mais tarde" })
+        return res.status(500).json({ msg: "Houve um erro. Tente mais tarde", error })
     }
 })
 
@@ -27,7 +27,7 @@ usuariosRouter.get("/usuarios/:id", async (req, res) => {
         }
 
     } catch (error) {
-        return res.status(500).json({ msg: "Houve um erro. Tente mais tarde" })
+        return res.status(500).json({ msg: "Houve um erro. Tente mais tarde", error })
     }
 })
 
@@ -38,7 +38,7 @@ usuariosRouter.post("/usuarios", async (req, res) => {
         await createUser(usuario)
         return res.status(201).json({ msg: "Usuário Cadastrado" })
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor" })
+        return res.status(500).json({ msg: "Erro interno no servidor", error })
     }
 })
 
@@ -55,7 +55,7 @@ usuariosRouter.put("/usuarios/:id", async (req, res) => {
             return res.status(404).json({ msg: "Usuário não encontrado" })
         }
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor" })
+        return res.status(500).json({ msg: "Erro interno no servidor", error })
     }
 })
 
@@ -71,7 +71,7 @@ usuariosRouter.delete("/usuarios/:id", async (req, res) => {
             return res.status(404).json({ msg: "Usuário não encontrado" })
         }
     } catch (error) {
-        return res.status(500).json({ msg: "Erro interno no servidor" })
+        return res.status(500).json({ msg: "Erro interno no servidor", error })
     }
 })
 
