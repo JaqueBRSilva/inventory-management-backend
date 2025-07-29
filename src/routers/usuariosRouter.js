@@ -1,5 +1,5 @@
 import express from "express"
-import { createUser, deleteUser, findAllUsers, findUserById } from "../services/usuariosService.js"
+import { createUser, deleteUser, findAllUsers, findUserById, updateUser } from "../services/usuariosService.js"
 
 const usuariosRouter = express.Router()
 
@@ -47,7 +47,7 @@ usuariosRouter.put("/usuarios/:id", async (req, res) => {
     try {
         const id = req.params.id
         const usuario = req.body
-        const flag = await update(id, usuario)
+        const flag = await updateUser(id, usuario)
 
         if (flag) {
             return res.status(200).json({ msg: "Usuário alterado" })
