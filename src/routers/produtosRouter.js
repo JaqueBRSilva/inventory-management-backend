@@ -1,5 +1,5 @@
 import express from "express";
-import { findAll, findById } from "../services/produtosService.js";
+import { findAll, findById, remove, save, update } from "../services/produtosService.js";
 
 const produtosRouter = express.Router();
 
